@@ -21,9 +21,10 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
+        h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            margin-top: 10px;
         }
 
         input,
@@ -74,23 +75,62 @@
             display: block;
             margin: 0 auto 12px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         }
-        
+
+        .slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .slide.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .nav-buttons button {
+            flex: 1;
+            margin: 5px;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="invitation">
-        <img src="resources/1.png" />
-        <img src="resources/2.jpg" />
-        <img src="resources/3.jpg" />
-        <img src="resources/rsvp.jpg" />
-      </div>
+    <div class="invitation shared-width">
+
+        <div class="slide active">
+            <img src="resources/1.png">
+        </div>
+
+        <div class="slide">
+            <img src="resources/2.jpg">
+        </div>
+
+        <div class="slide">
+            <img src="resources/3.jpg">
+        </div>
+
+        <div class="slide">
+            <img src="resources/rsvp.jpg">
+        </div>
+
+        <div class="nav-buttons">
+            <button id="prevBtn">← Back</button>
+            <button id="nextBtn">Next →</button>
+        </div>
+
+    </div>
 
     <div class="container">
-
+        <h2>RSVP</h2>
         <form id="rsvp-form">
             <select id="name" name="name" required>
                 <option value="" disabled selected>Name</option>
@@ -204,6 +244,41 @@
         nameSelect.addEventListener("change", validateForm);
         attendingSelect.addEventListener("change", validateForm);
         guestInput.addEventListener("input", validateForm);
+
+        // pagination
+        const slides = document.querySelectorAll(".slide");
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle("active", i === index);
+            });
+
+            prevBtn.style.display = index === 0 ? "none" : "inline-block";
+            nextBtn.style.display = index === slides.length - 1 ? "none" : "inline-block";
+        }
+
+        // Next
+        nextBtn.addEventListener("click", () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Back
+        prevBtn.addEventListener("click", () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Init
+        showSlide(currentSlide);
 
     </script>
 
