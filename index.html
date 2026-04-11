@@ -238,7 +238,7 @@
                 guestInput.disabled = false;
             }
 
-            validateForm(); // 👈 add this
+            validateForm();
         });
 
         nameSelect.addEventListener("change", validateForm);
@@ -279,6 +279,34 @@
 
         // Init
         showSlide(currentSlide);
+
+
+        let startX = 0;
+        let endX = 0;
+
+        const container = document.querySelector(".invitation");
+
+        container.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+        });
+
+        container.addEventListener("touchend", (e) => {
+        endX = e.changedTouches[0].clientX;
+
+        let diff = startX - endX;
+
+        // swipe left → next
+        if (diff > 50 && currentSlide < slides.length - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        // swipe right → previous
+        if (diff < -50 && currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+        });
 
     </script>
 
