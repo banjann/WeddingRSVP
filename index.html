@@ -54,13 +54,41 @@
             font-size: 16px;
         }
 
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
         button:hover {
             background: #333;
         }
+
+        .invitation {
+            max-width: 420px;
+            margin: auto;
+        }
+
+        .invitation img {
+            width: 100%;
+            display: block;
+            margin-bottom: 12px;
+            border-radius: 8px;
+
+            /* IMPORTANT for white background invitations */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
     </style>
 </head>
 
 <body>
+
+    <div class="invitation">
+        <img src="resources/1.png" />
+        <img src="resources/2.jpg" />
+        <img src="resources/3.jpg" />
+        <img src="resources/rsvp.jpg" />
+      </div>
 
     <div class="container">
         <h1>Ivan & Jean</h1>
@@ -84,13 +112,26 @@
 
             <p id="guest-info" style="font-size: 14px; color: gray; margin-top: 5px;"></p>
 
-            <button type="submit">Submit</button>
+            <button id="submitBtn" type="submit" disabled>Submit</button>
         </form>
 
     </div>
 
     <script>
         const scriptURL = "https://script.google.com/macros/s/AKfycbwt_obHGrQDnJtuHiH7nJu7qh3nV7ldHfEux4F_-1ddIV1D_k50nxjjTXXGDD1eK0ZAlA/exec"
+
+        const submitBtn = document.getElementById("submitBtn");
+        const attendingSelect = document.getElementById("attending");
+        const nameSelect = document.getElementById("name");
+        const guestInput = document.getElementById("guests");
+        const guestInfo = document.getElementById("guest-info");
+
+        const guestLimits = {
+            "John": 1,
+            "Paul": 5,
+            "James": 3,
+            "Barabas": 2
+        };
 
         document.getElementById("rsvp-form").addEventListener("submit", e => {
             e.preventDefault();
@@ -103,18 +144,6 @@
             alert("RSVP submitted!");
             e.target.reset();
         });
-
-        const attendingSelect = document.getElementById("attending");
-        const nameSelect = document.getElementById("name");
-        const guestInput = document.getElementById("guests");
-        const guestInfo = document.getElementById("guest-info");
-
-        const guestLimits = {
-            "John": 1,
-            "Paul": 5,
-            "James": 3,
-            "Barabas": 2
-        };
 
         attendingSelect.addEventListener("change", function () {
             if (this.value === "No") {
@@ -150,6 +179,33 @@
                 document.getElementById("name").dispatchEvent(new Event("change"));
             }
         });
+
+        function validateForm() {
+            const nameValid = nameSelect.value !== "";
+            const attendingValid = attendingSelect.value !== "";
+            const guestsValid = guestInput.value !== "" && !isNaN(guestInput.value);
+
+            if (nameValid && attendingValid && guestsValid) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        attendingSelect.addEventListener("change", function () {
+            if (this.value === "No") {
+                guestInput.value = 0;
+                guestInput.disabled = true;
+            } else {
+                guestInput.disabled = false;
+            }
+
+            validateForm(); // 👈 add this
+        });
+
+        nameSelect.addEventListener("change", validateForm);
+        attendingSelect.addEventListener("change", validateForm);
+        guestInput.addEventListener("input", validateForm);
 
     </script>
 
