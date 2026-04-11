@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 420px;
+            margin: auto;
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Ivan & Jean</h1>
+
+        <form id="rsvp-form">
+            <select id="name" name="name" required>
+                <option value="" disabled selected>Name</option>
+                <option value="James">James</option>
+                <option value="Paul">Paul</option>
+                <option value="John">John</option>
+                <option value="Barabas">Barabas</option>
+            </select>
+
+            <select id="attending" name="attending">
+                <option value="" disabled selected>Attendance</option>
+                <option value="Yes">I am going.</option>
+                <option value="No">Sorry, I can't make it.</option>
+            </select>
+
+            <input id="guests" type="number" name="guests" placeholder="Number of Guests" />
+
+            <p id="guest-info" style="font-size: 14px; color: gray; margin-top: 5px;"></p>
+
+            <button type="submit">Submit</button>
+        </form>
+
+    </div>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwt_obHGrQDnJtuHiH7nJu7qh3nV7ldHfEux4F_-1ddIV1D_k50nxjjTXXGDD1eK0ZAlA/exec"
+
+        document.getElementById("rsvp-form").addEventListener("submit", e => {
+            e.preventDefault();
+
+            fetch(scriptURL, {
+                method: "POST",
+                body: new FormData(e.target)
+            });
+
+            alert("RSVP submitted!");
+            e.target.reset();
+        });
+
+        const attendingSelect = document.getElementById("attending");
+        const nameSelect = document.getElementById("name");
+        const guestInput = document.getElementById("guests");
+        const guestInfo = document.getElementById("guest-info");
+
+        const guestLimits = {
+            "John": 1,
+            "Paul": 5,
+            "James": 3,
+            "Barabas": 2
+        };
+
+        attendingSelect.addEventListener("change", function () {
+            if (this.value === "No") {
+                guestInput.value = 0;
+                guestInput.disabled = true;
+                guestInfo.innerText = "No guests needed since you're not attending.";
+            } else {
+                guestInput.disabled = false;
+
+                // Optional: trigger re-fetch of guest limit
+                document.getElementById("name").dispatchEvent(new Event("change"));
+            }
+        });
+
+        nameSelect.addEventListener("change", function () {
+            const name = this.value;
+
+            if (guestLimits[name] !== undefined) {
+                guestInput.value = guestLimits[name];
+                guestInput.max = guestLimits[name];
+
+                guestInfo.innerText = `You can bring up to ${guestLimits[name]} guest(s).`;
+            }
+
+            if (attendingSelect.value === "No") {
+                guestInput.value = 0;
+                guestInput.disabled = true;
+                guestInfo.innerText = "No guests needed since you're not attending.";
+            } else {
+                guestInput.disabled = false;
+
+                // Optional: trigger re-fetch of guest limit
+                document.getElementById("name").dispatchEvent(new Event("change"));
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
