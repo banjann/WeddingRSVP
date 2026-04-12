@@ -48,11 +48,12 @@
             width: 100%;
             margin-top: 15px;
             padding: 12px;
-            background: black;
-            color: white;
+            background: #a8d5ba; /* pastel green */
+            color: #2f4f4f; /* soft dark text */
             border: none;
             border-radius: 10px;
             font-size: 16px;
+            transition: all 0.2s ease;
         }
 
         button:disabled {
@@ -60,8 +61,12 @@
             cursor: not-allowed;
         }
 
+        button:active {
+            transform: scale(0.98);
+        }
+
         button:hover {
-            background: #333;
+            background: #95cbb0;
         }
 
         .invitation {
@@ -122,36 +127,36 @@
             <img src="resources/rsvp.jpg">
         </div>
 
+        <div class="slide">
+            <h2>RSVP</h2>
+            <form id="rsvp-form">
+                <select id="name" name="name" required>
+                    <option value="" disabled selected>Name</option>
+                    <option value="James">James</option>
+                    <option value="Paul">Paul</option>
+                    <option value="John">John</option>
+                    <option value="Barabas">Barabas</option>
+                </select>
+    
+                <select id="attending" name="attending">
+                    <option value="" disabled selected>Attendance</option>
+                    <option value="Yes">I am going.</option>
+                    <option value="No">Sorry, I can't make it.</option>
+                </select>
+    
+                <input id="guests" type="number" name="guests" placeholder="Reserved Seats"/>
+    
+                <p id="guest-info" style="font-size: 14px; color: gray; margin-top: 5px;"></p>
+    
+                <button id="submitBtn" type="submit" disabled>Submit</button>
+            </form>
+    
+        </div>
+
         <div class="nav-buttons">
             <button id="prevBtn">← Back</button>
             <button id="nextBtn">Next →</button>
         </div>
-
-    </div>
-
-    <div class="container">
-        <h2>RSVP</h2>
-        <form id="rsvp-form">
-            <select id="name" name="name" required>
-                <option value="" disabled selected>Name</option>
-                <option value="James">James</option>
-                <option value="Paul">Paul</option>
-                <option value="John">John</option>
-                <option value="Barabas">Barabas</option>
-            </select>
-
-            <select id="attending" name="attending">
-                <option value="" disabled selected>Attendance</option>
-                <option value="Yes">I am going.</option>
-                <option value="No">Sorry, I can't make it.</option>
-            </select>
-
-            <input id="guests" type="number" name="guests" placeholder="Number of Guests" />
-
-            <p id="guest-info" style="font-size: 14px; color: gray; margin-top: 5px;"></p>
-
-            <button id="submitBtn" type="submit" disabled>Submit</button>
-        </form>
 
     </div>
 
@@ -187,7 +192,7 @@
             if (this.value === "No") {
                 guestInput.value = 0;
                 guestInput.disabled = true;
-                guestInfo.innerText = "No guests needed since you're not attending.";
+                guestInfo.innerText = "No seats will be reserved since you can't be with us.";
             } else {
                 guestInput.disabled = false;
 
@@ -203,7 +208,7 @@
                 guestInput.value = guestLimits[name];
                 guestInput.max = guestLimits[name];
 
-                guestInfo.innerText = `You can bring up to ${guestLimits[name]} guest(s).`;
+                guestInfo.innerText = `There are ${guestLimits[name]} seats reserved for you.`;
             }
 
             if (attendingSelect.value === "No") {
@@ -258,6 +263,15 @@
             });
 
             prevBtn.style.display = index === 0 ? "none" : "inline-block";
+
+            // 👇 Change button text depending on position
+            if (index === slides.length - 2) {
+                nextBtn.innerText = "RSVP →";
+            } else {
+                nextBtn.innerText = "Next →";
+            }
+
+            // Hide next button on last slide (form)
             nextBtn.style.display = index === slides.length - 1 ? "none" : "inline-block";
         }
 
