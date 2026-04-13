@@ -171,10 +171,18 @@
             <form id="rsvp-form">
                 <select id="name" name="name" required>
                     <option value="" disabled selected>Name</option>
-                    <option value="James">James</option>
-                    <option value="Paul">Paul</option>
-                    <option value="John">John</option>
-                    <option value="Barabas">Barabas</option>
+                    <option value="Jeff Potestad">Jeff Potestad</option>
+                    <option value="Raymart Bagongon">Raymart Bagongon</option>
+                    <option value="Binoy Navarro">Binoy Navarro</option>
+                    <option value="Jickler Chavez">Jickler Chavez</option>
+                    <option value="Pearl Degamo">Pearl Degamo</option>
+                    <option value="Will Tajantajan">Willenne Tajantajan</option>
+                    <option value="Roger Layo">Roger Layo</option>
+                    <option value="Jade Piaoan">Jade Piaoan</option>
+                    <option value="Rex Baloria">Rex Baloria</option>
+                    <option value="Christian Buñao">Christian Buñao</option>
+                    <option value="Marjunn Tubaon">Marjunn Tubaon</option>
+                    <option value="Ed Mendez">Ed Mendez</option>
                 </select>
 
                 <select id="attending" name="attending">
@@ -216,10 +224,18 @@
         const guestInfo = document.getElementById("guest-info");
 
         const guestLimits = {
-            "John": 1,
-            "Paul": 5,
-            "James": 3,
-            "Barabas": 2
+            "Jeff Potestad": 2,
+            "Raymart Bagongon": 2,
+            "Binoy Navarro": 2,
+            "Jickler Chavez": 3,
+            "Pearl Degamo": 2,
+            "Will Tajantajan": 1,
+            "Roger Layo": 1,
+            "Jade Piaoan": 2,
+            "Rex Baloria": 1,
+            "Christian Buñao": 1,
+            "Marjunn Tubaon": 2,
+            "Ed Mendez": 2
         };
 
         document.getElementById("rsvp-form").addEventListener("submit", e => {
@@ -253,7 +269,7 @@
                 guestInput.value = guestLimits[name];
                 guestInput.max = guestLimits[name];
 
-                guestInfo.innerText = `There are ${guestLimits[name]} seats reserved for you, but please indicate if you only need fewer seats.`
+                guestInfo.innerText = `There are ${guestLimits[name]} seat(s) reserved for you, but please indicate if you only need fewer seats.`
             }
 
             if (attendingSelect.value === "No") {
