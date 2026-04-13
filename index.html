@@ -94,16 +94,27 @@
             opacity: 1;
         }
 
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
 
-        .nav-buttons button {
-            flex: 1;
-            margin: 5px;
-        }
+.nav-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.nav-btn img {
+  width: 50px;   /* adjust size here */
+  height: auto;
+}
+
+.nav-btn:active img {
+  transform: scale(0.9);
+}
     </style>
 </head>
 
@@ -139,7 +150,7 @@
                 </select>
     
                 <select id="attending" name="attending">
-                    <option value="" disabled selected>Attendance</option>
+                    <option value="" disabled selected>Confirm Attendance</option>
                     <option value="Yes">I am going.</option>
                     <option value="No">Sorry, I can't make it.</option>
                 </select>
@@ -154,8 +165,13 @@
         </div>
 
         <div class="nav-buttons">
-            <button id="prevBtn">← Back</button>
-            <button id="nextBtn">Next →</button>
+            <button id="prevBtn" class="nav-btn">
+                <img src="resources/back.png" alt="Back">
+            </button>
+
+            <button id="nextBtn" class="nav-btn">
+                <img id="nextIcon" src="resources/next.png" alt="Next">
+            </button>
         </div>
 
     </div>
@@ -208,7 +224,7 @@
                 guestInput.value = guestLimits[name];
                 guestInput.max = guestLimits[name];
 
-                guestInfo.innerText = `There are ${guestLimits[name]} seats reserved for you.`;
+                guestInfo.innerText = `There are ${guestLimits[name]} seats reserved for you, but please indicate if you only need fewer seats.`
             }
 
             if (attendingSelect.value === "No") {
