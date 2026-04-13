@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 
     <style>
         body {
@@ -10,6 +10,24 @@
             background: linear-gradient(to bottom, #f7f7f7, #ffffff);
             margin: 0;
             padding: 20px;
+        }
+
+        #imageModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #imageModal img {
+            max-width: 100%;
+            max-height: 100%;
         }
 
         .container {
@@ -132,19 +150,19 @@
     <div class="invitation shared-width">
 
         <div class="slide active">
-            <img src="resources/1.png">
+            <img src="resources/1.png" class="zoomable">
         </div>
 
         <div class="slide">
-            <img src="resources/2.jpg">
+            <img src="resources/2.jpg" class="zoomable">
         </div>
 
         <div class="slide">
-            <img src="resources/3.jpg">
+            <img src="resources/3.jpg" class="zoomable">
         </div>
 
         <div class="slide">
-            <img src="resources/rsvp.jpg">
+            <img src="resources/rsvp.jpg" class="zoomable">
         </div>
 
         <div class="slide">
@@ -348,8 +366,25 @@
         }
         });
 
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImg");
+
+        document.querySelectorAll(".zoomable").forEach(img => {
+            img.addEventListener("click", () => {
+                modal.style.display = "flex";
+                modalImg.src = img.src;
+            });
+        });
+
+        modal.addEventListener("click", () => {
+        modal.style.display = "none";
+        });
+
     </script>
 
+    <div id="imageModal">
+        <img id="modalImg">
+    </div>
 </body>
 
 </html>
