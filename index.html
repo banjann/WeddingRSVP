@@ -94,27 +94,36 @@
             opacity: 1;
         }
 
-.nav-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 15px;
+        }
 
-.nav-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
+        .nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
 
-.nav-btn img {
-  width: 50px;   /* adjust size here */
-  height: auto;
-}
+            display: inline-flex; /* 👈 important */
+            flex-direction: column;
+            align-items: center;
 
-.nav-btn:active img {
-  transform: scale(0.9);
-}
+            padding: 4px; /* 👈 reduce this */
+            width: auto;  /* 👈 prevent stretching */
+        }
+
+        .nav-btn img {
+        width: 50px;
+        height: auto;
+        }
+
+        .nav-btn span {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #555;
+        }
     </style>
 </head>
 
@@ -167,10 +176,12 @@
         <div class="nav-buttons">
             <button id="prevBtn" class="nav-btn">
                 <img src="resources/back.png" alt="Back">
+                <span>Back</span>
             </button>
 
             <button id="nextBtn" class="nav-btn">
                 <img id="nextIcon" src="resources/next.png" alt="Next">
+                <span id="nextText">Next</span>
             </button>
         </div>
 
@@ -272,23 +283,22 @@
         const prevBtn = document.getElementById("prevBtn");
 
         let currentSlide = 0;
+        const nextText = document.getElementById("nextText");
 
         function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle("active", i === index);
-            });
+        slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === index);
+        });
 
-            prevBtn.style.display = index === 0 ? "none" : "inline-block";
-            nextBtn.style.display = index === slides.length - 1 ? "none" : "inline-block";
+        prevBtn.style.display = index === 0 ? "none" : "inline-block";
+        nextBtn.style.display = index === slides.length - 1 ? "none" : "inline-block";
 
-            const nextIcon = document.getElementById("nextIcon");
-
-            // 👇 Optional: change icon on RSVP step
-            if (index === slides.length - 2) {
-                nextIcon.src = "resources/next.png"; // or rsvp.png if you have one
-            } else {
-                nextIcon.src = "resources/next.png";
-            }
+        // 👇 change label
+        if (index === slides.length - 2) {
+            nextText.innerText = "RSVP";
+        } else {
+            nextText.innerText = "Next";
+        }
         }
 
         // Next
