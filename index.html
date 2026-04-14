@@ -210,7 +210,7 @@
     </div>
 
     <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbwt_obHGrQDnJtuHiH7nJu7qh3nV7ldHfEux4F_-1ddIV1D_k50nxjjTXXGDD1eK0ZAlA/exec"
+        const scriptURL = "https://script.google.com/macros/s/AKfycby82ELZEbiCUoQ-jzSvJQA9s5Y6RiO7BTB_i8-GEru_O9QdzG132LrDLRj6IL8CRqDq/exec"
 
         const submitBtn = document.getElementById("submitBtn");
         const attendingSelect = document.getElementById("attending");
@@ -277,13 +277,43 @@
         document.getElementById("rsvp-form").addEventListener("submit", e => {
             e.preventDefault();
 
+            // 👇 PUT IT HERE (right away)
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Submitting.."
+
             fetch(scriptURL, {
                 method: "POST",
                 body: new FormData(e.target)
-            });
+            })
+            .then(res => res.text())
+            .then(result => {
 
-            alert("RSVP submitted!");
-            e.target.reset();
+                if (result === "ALREADY_SUBMITTED") {
+                    alert("You have already submitted your RSVP. Please message Ivan if you have change of plans :)");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Submit";
+                    return;
+                }
+
+                if (result === "SUCCESS") {
+                    alert("RSVP submitted successfully!");
+                    submitBtn.innerText = "Submit";
+                    e.target.reset();
+                } else {
+                    alert("Something went wrong. Please try again.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Submit";
+                }
+
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Network error. Please try again.");
+
+                // 👇 re-enable on error
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit";
+            });
         });
 
         attendingSelect.addEventListener("change", function () {
